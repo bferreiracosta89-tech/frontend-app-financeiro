@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "Controle de Restauração Financeira",
+    "slug": "controle-restauracao-financeira",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F7F7F5",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.financa.restauracao",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Use Face ID para desbloquear o app."
+      }
+    },
+    "android": {
+      "package": "com.financa.restauracao",
+      "adaptiveIcon": {
+        "backgroundColor": "#F7F7F5"
+      },
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "POST_NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM"
+      ]
+    },
+    "extra": {
+      "apiUrl": "http://192.168.23.248:3001"
+    },
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Use Face ID para desbloquear o app."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#185FA5"
+        }
+      ],
+      "expo-secure-store"
+    ]
+  }
+}
