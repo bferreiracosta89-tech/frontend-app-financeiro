@@ -37,7 +37,9 @@ async function ensureColumn(
     if (!(await tableExists(db, table))) return;
 
     if (!(await columnExists(db, table, column))) {
-      await db.execAsync(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+      await db.execAsync(
+        `ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`,
+      );
     }
   } catch (e) {
     console.warn(`migration ignored ${table}.${column}`, e);
@@ -391,7 +393,9 @@ export const initDatabase = async (): Promise<void> => {
   await seedInitialData(db);
 };
 
-async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
+async function runDefensiveMigrations(
+  db: SQLite.SQLiteDatabase,
+): Promise<void> {
   // debts
   await ensureColumn(db, "debts", "numero_contrato", "TEXT DEFAULT ''");
   await ensureColumn(db, "debts", "valor_total", "REAL DEFAULT 0");
@@ -404,8 +408,18 @@ async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> 
   await ensureColumn(db, "debts", "total_anterior", "REAL DEFAULT NULL");
   await ensureColumn(db, "debts", "valor_total_anterior", "REAL DEFAULT NULL");
   await ensureColumn(db, "debts", "parcela_anterior", "REAL DEFAULT NULL");
-  await ensureColumn(db, "debts", "qtd_parcelas_anterior", "INTEGER DEFAULT NULL");
-  await ensureColumn(db, "debts", "parcelas_pagas_anterior", "INTEGER DEFAULT NULL");
+  await ensureColumn(
+    db,
+    "debts",
+    "qtd_parcelas_anterior",
+    "INTEGER DEFAULT NULL",
+  );
+  await ensureColumn(
+    db,
+    "debts",
+    "parcelas_pagas_anterior",
+    "INTEGER DEFAULT NULL",
+  );
 
   // accounts
   await ensureColumn(db, "accounts", "saldo", "REAL DEFAULT 0");
@@ -421,11 +435,21 @@ async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> 
   await ensureColumn(db, "expenses", "vencimento", "TEXT DEFAULT ''");
   await ensureColumn(db, "expenses", "pago", "INTEGER DEFAULT 0");
   await ensureColumn(db, "expenses", "essencial", "INTEGER DEFAULT 0");
-  await ensureColumn(db, "expenses", "forma_pagamento", "TEXT DEFAULT 'Dinheiro'");
+  await ensureColumn(
+    db,
+    "expenses",
+    "forma_pagamento",
+    "TEXT DEFAULT 'Dinheiro'",
+  );
   await ensureColumn(db, "expenses", "account_id", "INTEGER DEFAULT NULL");
   await ensureColumn(db, "expenses", "parcelado", "INTEGER DEFAULT 0");
   await ensureColumn(db, "expenses", "qtd_parcelas", "INTEGER DEFAULT 1");
-  await ensureColumn(db, "expenses", "card_purchase_id", "INTEGER DEFAULT NULL");
+  await ensureColumn(
+    db,
+    "expenses",
+    "card_purchase_id",
+    "INTEGER DEFAULT NULL",
+  );
 
   // negotiations
   await ensureColumn(db, "negotiations", "debt_id", "INTEGER DEFAULT NULL");
@@ -440,13 +464,28 @@ async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> 
 
   // card purchases
   await ensureColumn(db, "card_purchases", "debt_id", "INTEGER DEFAULT NULL");
-  await ensureColumn(db, "card_purchases", "estabelecimento", "TEXT DEFAULT ''");
+  await ensureColumn(
+    db,
+    "card_purchases",
+    "estabelecimento",
+    "TEXT DEFAULT ''",
+  );
   await ensureColumn(db, "card_purchases", "data_compra", "TEXT DEFAULT ''");
   await ensureColumn(db, "card_purchases", "valor_total", "REAL DEFAULT 0");
   await ensureColumn(db, "card_purchases", "qtd_parcelas", "INTEGER DEFAULT 1");
-  await ensureColumn(db, "card_purchases", "parcelas_pagas", "INTEGER DEFAULT 0");
+  await ensureColumn(
+    db,
+    "card_purchases",
+    "parcelas_pagas",
+    "INTEGER DEFAULT 0",
+  );
   await ensureColumn(db, "card_purchases", "valor_parcela", "REAL DEFAULT 0");
-  await ensureColumn(db, "card_purchases", "primeira_parcela", "TEXT DEFAULT ''");
+  await ensureColumn(
+    db,
+    "card_purchases",
+    "primeira_parcela",
+    "TEXT DEFAULT ''",
+  );
 
   // payments
   await ensureColumn(db, "payments", "debt_id", "INTEGER DEFAULT NULL");
@@ -485,30 +524,90 @@ async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> 
   await ensureColumn(db, "agreements", "prazo", "TEXT DEFAULT ''");
   await ensureColumn(db, "agreements", "qtd_parcelas", "INTEGER DEFAULT 0");
   await ensureColumn(db, "agreements", "parcelas_pagas", "INTEGER DEFAULT 0");
-  await ensureColumn(db, "agreements", "primeiro_vencimento", "TEXT DEFAULT ''");
+  await ensureColumn(
+    db,
+    "agreements",
+    "primeiro_vencimento",
+    "TEXT DEFAULT ''",
+  );
   await ensureColumn(db, "agreements", "canal", "TEXT DEFAULT ''");
   await ensureColumn(db, "agreements", "homologado", "INTEGER DEFAULT 0");
   await ensureColumn(db, "agreements", "substitui_divida", "INTEGER DEFAULT 0");
   await ensureColumn(db, "agreements", "observacao", "TEXT DEFAULT ''");
 
   // legal agreements
-  await ensureColumn(db, "legal_agreements", "numero_processo", "TEXT DEFAULT ''");
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "numero_processo",
+    "TEXT DEFAULT ''",
+  );
   await ensureColumn(db, "legal_agreements", "processo", "TEXT DEFAULT ''");
   await ensureColumn(db, "legal_agreements", "orgao", "TEXT DEFAULT ''");
   await ensureColumn(db, "legal_agreements", "vara", "TEXT DEFAULT ''");
-  await ensureColumn(db, "legal_agreements", "data_audiencia", "TEXT DEFAULT ''");
-  await ensureColumn(db, "legal_agreements", "data_homologacao", "TEXT DEFAULT ''");
-  await ensureColumn(db, "legal_agreements", "valor_consolidado", "REAL DEFAULT 0");
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "data_audiencia",
+    "TEXT DEFAULT ''",
+  );
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "data_homologacao",
+    "TEXT DEFAULT ''",
+  );
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "valor_consolidado",
+    "REAL DEFAULT 0",
+  );
   await ensureColumn(db, "legal_agreements", "valor_total", "REAL DEFAULT 0");
-  await ensureColumn(db, "legal_agreements", "parcela_judicial", "REAL DEFAULT 0");
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "parcela_judicial",
+    "REAL DEFAULT 0",
+  );
   await ensureColumn(db, "legal_agreements", "parcela", "REAL DEFAULT 0");
-  await ensureColumn(db, "legal_agreements", "qtd_parcelas", "INTEGER DEFAULT 0");
-  await ensureColumn(db, "legal_agreements", "parcelas_pagas", "INTEGER DEFAULT 0");
-  await ensureColumn(db, "legal_agreements", "primeiro_vencimento", "TEXT DEFAULT ''");
-  await ensureColumn(db, "legal_agreements", "credores_incluidos", "TEXT DEFAULT ''");
-  await ensureColumn(db, "legal_agreements", "substitui_dividas", "INTEGER DEFAULT 0");
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "qtd_parcelas",
+    "INTEGER DEFAULT 0",
+  );
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "parcelas_pagas",
+    "INTEGER DEFAULT 0",
+  );
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "primeiro_vencimento",
+    "TEXT DEFAULT ''",
+  );
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "credores_incluidos",
+    "TEXT DEFAULT ''",
+  );
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "substitui_dividas",
+    "INTEGER DEFAULT 0",
+  );
   await ensureColumn(db, "legal_agreements", "prazo", "TEXT DEFAULT ''");
-  await ensureColumn(db, "legal_agreements", "status", "TEXT DEFAULT 'EM_ANDAMENTO'");
+  await ensureColumn(
+    db,
+    "legal_agreements",
+    "status",
+    "TEXT DEFAULT 'EM_ANDAMENTO'",
+  );
   await ensureColumn(db, "legal_agreements", "observacao", "TEXT DEFAULT ''");
 
   // tax reports
@@ -516,15 +615,30 @@ async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> 
   await ensureColumn(db, "tax_reports", "rendimentos", "REAL DEFAULT 0");
   await ensureColumn(db, "tax_reports", "dividas", "REAL DEFAULT 0");
   await ensureColumn(db, "tax_reports", "pagamentos", "REAL DEFAULT 0");
-  await ensureColumn(db, "tax_reports", "dividas_declaraveis", "REAL DEFAULT 0");
-  await ensureColumn(db, "tax_reports", "pagamentos_efetuados", "REAL DEFAULT 0");
+  await ensureColumn(
+    db,
+    "tax_reports",
+    "dividas_declaraveis",
+    "REAL DEFAULT 0",
+  );
+  await ensureColumn(
+    db,
+    "tax_reports",
+    "pagamentos_efetuados",
+    "REAL DEFAULT 0",
+  );
   await ensureColumn(db, "tax_reports", "juros_pagos", "REAL DEFAULT 0");
   await ensureColumn(db, "tax_reports", "descontos_obtidos", "REAL DEFAULT 0");
   await ensureColumn(db, "tax_reports", "bancos", "TEXT DEFAULT ''");
   await ensureColumn(db, "tax_reports", "bens", "TEXT DEFAULT ''");
   await ensureColumn(db, "tax_reports", "observacao", "TEXT DEFAULT ''");
   await ensureColumn(db, "tax_reports", "payload", "TEXT DEFAULT ''");
-  await ensureColumn(db, "tax_reports", "created_at", "TEXT DEFAULT CURRENT_TIMESTAMP");
+  await ensureColumn(
+    db,
+    "tax_reports",
+    "created_at",
+    "TEXT DEFAULT CURRENT_TIMESTAMP",
+  );
 
   // indexes
   await db.execAsync(`
@@ -536,74 +650,46 @@ async function runDefensiveMigrations(db: SQLite.SQLiteDatabase): Promise<void> 
 }
 
 async function seedInitialData(db: SQLite.SQLiteDatabase) {
-  const incomeCount = await db.getFirstAsync<{ c: number }>("SELECT COUNT(*) c FROM income");
+  const incomeCount = await db.getFirstAsync<{ c: number }>(
+    "SELECT COUNT(*) c FROM income",
+  );
   if ((incomeCount?.c ?? 0) === 0) {
-    await db.runAsync("INSERT INTO income (bruto, liquido, updatedAt, updated_at) VALUES (?, ?, ?, ?)", [
-      11900,
-      9500,
-      new Date().toISOString(),
-      new Date().toISOString(),
-    ]);
+    await db.runAsync(
+      "INSERT INTO income (bruto, liquido, updatedAt, updated_at) VALUES (?, ?, ?, ?)",
+      [11900, 9500, new Date().toISOString(), new Date().toISOString()],
+    );
   }
 
-  const minCount = await db.getFirstAsync<{ c: number }>("SELECT COUNT(*) c FROM min_existencial");
+  const minCount = await db.getFirstAsync<{ c: number }>(
+    "SELECT COUNT(*) c FROM min_existencial",
+  );
   if ((minCount?.c ?? 0) === 0) {
     await db.runAsync(
       `INSERT INTO min_existencial (alimentacao, transporte, agua, energia, internet, saude, outros, reserva, updatedAt, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [2500, 800, 120, 320, 120, 200, 0, 400, new Date().toISOString(), new Date().toISOString()],
+      [
+        2500,
+        800,
+        120,
+        320,
+        120,
+        200,
+        0,
+        400,
+        new Date().toISOString(),
+        new Date().toISOString(),
+      ],
     );
   }
 
-  const legalCount = await db.getFirstAsync<{ c: number }>("SELECT COUNT(*) c FROM legal_plan");
+  const legalCount = await db.getFirstAsync<{ c: number }>(
+    "SELECT COUNT(*) c FROM legal_plan",
+  );
   if ((legalCount?.c ?? 0) === 0) {
-    await db.runAsync("INSERT INTO legal_plan (protocolado, updatedAt, updated_at) VALUES (0, ?, ?)", [
-      new Date().toISOString(),
-      new Date().toISOString(),
-    ]);
-  }
-
-  const debtsCount = await db.getFirstAsync<{ c: number }>("SELECT COUNT(*) c FROM debts");
-  if ((debtsCount?.c ?? 0) === 0) {
-    const debts = [
-      ["Banco do Brasil", "Empréstimo pessoal", "PAGAR", "MEDIA", 0],
-      ["Itaú", "Cartão", "NEGOCIAR", "BAIXA", 0],
-      ["Cooperforte", "Consignado", "PAGAR", "ALTA", 0],
-      ["Mercado Pago", "Fintech", "PAUSADO", "BAIXA", 0],
-      ["Caixa", "Empréstimo", "PAGAR", "MEDIA", 0],
-      ["Nubank", "Cartão", "PAGAR", "BAIXA", 0],
-      ["Carrefour", "Cartão", "PAGAR", "BAIXA", 0],
-      ["Financiamento habitacional", "Habitacional", "PAGAR", "ALTA", 1],
-      ["Financiamento de veículo", "Veículo", "PAGAR", "ALTA", 1],
-    ];
-
-    for (const [credor, tipo, status, prioridade, garantia] of debts) {
-      const now = new Date().toISOString();
-      await db.runAsync(
-        `INSERT INTO debts (credor, tipo, status, prioridade, garantia, updatedAt, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [credor as string, tipo as string, status as string, prioridade as string, garantia as number, now, now],
-      );
-    }
-  }
-
-  const accountsCount = await db.getFirstAsync<{ c: number }>("SELECT COUNT(*) c FROM accounts");
-  if ((accountsCount?.c ?? 0) === 0) {
-    const accounts = [
-      ["Banco do Brasil", "CONTA_CORRENTE", 1000],
-      ["Itaú", "CARTAO_CREDITO", 0],
-      ["Nubank", "CARTAO_CREDITO", 0],
-      ["Carrefour", "CARTAO_CREDITO", 0],
-      ["Caixa", "CONTA_CORRENTE", 500],
-    ];
-
-    for (const [nome, tipo, limite] of accounts) {
-      const now = new Date().toISOString();
-      await db.runAsync(
-        "INSERT INTO accounts (nome, tipo, limite_total, updatedAt, updated_at) VALUES (?, ?, ?, ?, ?)",
-        [nome as string, tipo as string, limite as number, now, now],
-      );
-    }
+    await db.runAsync(
+      "INSERT INTO legal_plan (protocolado, updatedAt, updated_at) VALUES (0, ?, ?)",
+      [new Date().toISOString(), new Date().toISOString()],
+    );
   }
 }
 
