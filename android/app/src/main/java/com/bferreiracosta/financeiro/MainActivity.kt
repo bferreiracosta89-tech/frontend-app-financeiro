@@ -1,4 +1,4 @@
-package com.financa.restauracao
+package com.bferreiracosta.financeiro
 
 import android.os.Build
 import android.os.Bundle
